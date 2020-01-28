@@ -43,8 +43,8 @@ namespace Stock
         private void button2_Click(object sender, EventArgs e)
         {
             //check username and password
-            SqlConnection con = new SqlConnection("Data Source=.\\SQLEXPRESS;Initial Catalog=Stock;Integrated Security=True");
-            SqlDataAdapter sda = new SqlDataAdapter(@"SELECT * FROM[Stock].[dbo].[login] WHERE UserName = '"+textBox1.Text+"' and Password = '"+textBox2.Text+"'",con);
+            SqlConnection con = Connections.GetConnection();
+            SqlDataAdapter sda = new SqlDataAdapter(@"SELECT * FROM [Stock].[dbo].[login] WHERE UserName = '"+textBox1.Text+"' and Password = '"+textBox2.Text+"'",con);
             DataTable dt = new DataTable();
             cyka = textBox1.Text;
             UserName = textBox1.Text;

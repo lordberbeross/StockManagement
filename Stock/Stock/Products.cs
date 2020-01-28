@@ -31,40 +31,43 @@ namespace Stock
 
         private void button2_Click(object sender, EventArgs e)
         {
-            SqlConnection con = new SqlConnection("Data Source=.\\SQLEXPRESS;Initial Catalog=Stock;Integrated Security=True");
-            con.Open();
-            bool status = false;
-            if (comboBox1.SelectedIndex== 0)
+            if (validation())
             {
-                status = true;
-            }
-            else
-            {
-                status = false;
-            }
-            var sqlQuery = "";
-            if (ifRecordExists(con, textBox1.Text))
-            {
-                sqlQuery = @"UPDATE [dbo].[Products] SET [ProductName] = '"+ textBox3.Text+"' ,[ProductStatus] = '"+status+"' WHERE [ProductCode] = '"+ textBox1.Text + "'";
-            }
-            else
-            {
-             sqlQuery = @"INSERT INTO [dbo].[Products] ([ProductCode],[ProductName],[ProductStatus]) VALUES 
+                SqlConnection con = Connections.GetConnection();
+                con.Open();
+                bool status = false;
+                if (comboBox1.SelectedIndex == 0)
+                {
+                    status = true;
+                }
+                else
+                {
+                    status = false;
+                }
+                var sqlQuery = "";
+                if (ifRecordExists(con, textBox1.Text))
+                {
+                    sqlQuery = @"UPDATE [dbo].[Products] SET [ProductName] = '" + textBox3.Text + "' ,[ProductStatus] = '" + status + "' WHERE [ProductCode] = '" + textBox1.Text + "'";
+                }
+                else
+                {
+                    sqlQuery = @"INSERT INTO [dbo].[Products] ([ProductCode],[ProductName],[ProductStatus]) VALUES 
                         ('" + textBox1.Text + "','" + textBox3.Text + "','" + status + "')";
+                }
+                SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                cmd.ExecuteNonQuery();
+                con.Close();
+                //reader
+
+                loadData();
+                reset();
             }
-            SqlCommand cmd = new SqlCommand(sqlQuery, con);
-            cmd.ExecuteNonQuery();
-            con.Close();
-            //reader
-
-            loadData();
-
            
         }
         public void loadData()
         {
-            SqlConnection con = new SqlConnection("Data Source=.\\SQLEXPRESS;Initial Catalog=Stock;Integrated Security=True");
-
+            SqlConnection con = Connections.GetConnection();
+    
             SqlDataAdapter sda = new SqlDataAdapter(@"SELECT *
   FROM[dbo].[Products]", con);
             DataTable dt = new DataTable();
@@ -106,8 +109,8 @@ namespace Stock
 
         private void button1_Click(object sender, EventArgs e)
         {
-            SqlConnection con = new SqlConnection("Data Source=.\\SQLEXPRESS;Initial Catalog=Stock;Integrated Security=True");
-            
+            SqlConnection con = Connections.GetConnection();
+
 
             if (ifRecordExists(con,textBox1.Text))
             {
@@ -123,11 +126,13 @@ namespace Stock
                 MessageBox.Show("Record Doesn't Exist!");
             }
             loadData();
+            reset();
         }
         
 
         private void dataGridView1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            button2.Text = "Update";
             textBox1.Text = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
             textBox3.Text = dataGridView1.SelectedRows[0].Cells[1].Value.ToString();
             if (dataGridView1.SelectedRows[0].Cells[2].Value.ToString()=="Active")
@@ -138,8 +143,30 @@ namespace Stock
             {
                 comboBox1.SelectedIndex = 1;
             }
+            
         }
-       
+           private void reset()
+        {
+            textBox1.Clear();
+            textBox3.Clear();
+            comboBox1.SelectedIndex = -1;
+            button2.Text = "Add";
+            textBox1.Focus();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            reset();
+        }
+        private bool validation()
+        {
+            bool result = false;
+            if (!string.IsNullOrEmpty(textBox1.Text) && !string.IsNullOrEmpty(textBox3.Text) && (comboBox1.SelectedIndex>-1))
+            {
+                result = true;
+            }
+            return result;
+        }
     }
 
 }
