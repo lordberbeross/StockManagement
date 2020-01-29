@@ -44,5 +44,12 @@ namespace Stock
             ana.Show();
             
         }
+
+        private void AccountsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ManageStaff staff = new ManageStaff();
+            staff.MdiParent = this;
+            staff.Show();
+        }
     }
 }

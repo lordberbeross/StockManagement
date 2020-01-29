@@ -47,12 +47,12 @@ namespace Stock
                 var sqlQuery = "";
                 if (ifRecordExists(con, textBox1.Text))
                 {
-                    sqlQuery = @"UPDATE [dbo].[Products] SET [ProductName] = '" + textBox3.Text + "' ,[ProductStatus] = '" + status + "' WHERE [ProductCode] = '" + textBox1.Text + "'";
+                    sqlQuery = @"UPDATE [dbo].[Products] SET [ProductClass] = '" + textBox2.Text + "' , [ProductName] = '" + textBox3.Text + "' ,[ProductPrice] = '" + textBox4.Text + "' ,[ProductStatus] = '" + status + "' WHERE [ProductCode] = '" + textBox1.Text + "'";
                 }
                 else
                 {
-                    sqlQuery = @"INSERT INTO [dbo].[Products] ([ProductCode],[ProductName],[ProductStatus]) VALUES 
-                        ('" + textBox1.Text + "','" + textBox3.Text + "','" + status + "')";
+                    sqlQuery = @"INSERT INTO [dbo].[Products] ([ProductCode],[ProductClass],[ProductName],[ProductPrice],[ProductStatus]) VALUES 
+                        ('" + textBox1.Text + "','" + textBox2.Text + "','" + textBox3.Text + "','" + textBox4.Text + "','" + status + "')";
                 }
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 cmd.ExecuteNonQuery();
@@ -77,16 +77,18 @@ namespace Stock
             {
                 int n = dataGridView1.Rows.Add();
                 dataGridView1.Rows[n].Cells[0].Value = item["ProductCode"].ToString();
-                dataGridView1.Rows[n].Cells[1].Value = item["ProductName"].ToString();
+                dataGridView1.Rows[n].Cells[1].Value = item["ProductClass"].ToString();
+                dataGridView1.Rows[n].Cells[2].Value = item["ProductName"].ToString();
+                dataGridView1.Rows[n].Cells[3].Value = item["ProductPrice"].ToString();
                 if ((bool)item["ProductStatus"])
                 {
-                    dataGridView1.Rows[n].Cells[2].Value = "Active";
+                    dataGridView1.Rows[n].Cells[4].Value = "Active";
                 }
                 else
                 {
-                    dataGridView1.Rows[n].Cells[2].Value = "Inactive";
+                    dataGridView1.Rows[n].Cells[4].Value = "Inactive";
                 }
-               
+                
 
             }
         } 
@@ -134,8 +136,10 @@ namespace Stock
         {
             button2.Text = "Update";
             textBox1.Text = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
-            textBox3.Text = dataGridView1.SelectedRows[0].Cells[1].Value.ToString();
-            if (dataGridView1.SelectedRows[0].Cells[2].Value.ToString()=="Active")
+            textBox2.Text = dataGridView1.SelectedRows[0].Cells[1].Value.ToString();
+            textBox3.Text = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
+            textBox4.Text = dataGridView1.SelectedRows[0].Cells[3].Value.ToString();
+            if (dataGridView1.SelectedRows[0].Cells[4].Value.ToString()=="Active")
             {
                 comboBox1.SelectedIndex = 0;
             }
@@ -148,7 +152,9 @@ namespace Stock
            private void reset()
         {
             textBox1.Clear();
+            textBox2.Clear();
             textBox3.Clear();
+            textBox4.Clear();
             comboBox1.SelectedIndex = -1;
             button2.Text = "Add";
             textBox1.Focus();
@@ -161,7 +167,7 @@ namespace Stock
         private bool validation()
         {
             bool result = false;
-            if (!string.IsNullOrEmpty(textBox1.Text) && !string.IsNullOrEmpty(textBox3.Text) && (comboBox1.SelectedIndex>-1))
+            if (!string.IsNullOrEmpty(textBox1.Text) && !string.IsNullOrEmpty(textBox2.Text) && !string.IsNullOrEmpty(textBox3.Text) && !string.IsNullOrEmpty(textBox4.Text) && (comboBox1.SelectedIndex>-1))
             {
                 result = true;
             }
