@@ -36,10 +36,11 @@
             this.productListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stockListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.homeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.accountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.accountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.adisyonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -52,7 +53,8 @@
             this.stocksToolStripMenuItem,
             this.reportsToolStripMenuItem,
             this.homeToolStripMenuItem,
-            this.accountsToolStripMenuItem});
+            this.accountsToolStripMenuItem,
+            this.adisyonToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(843, 28);
@@ -101,6 +103,13 @@
             this.homeToolStripMenuItem.Text = "Home";
             this.homeToolStripMenuItem.Click += new System.EventHandler(this.homeToolStripMenuItem_Click);
             // 
+            // accountsToolStripMenuItem
+            // 
+            this.accountsToolStripMenuItem.Name = "accountsToolStripMenuItem";
+            this.accountsToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
+            this.accountsToolStripMenuItem.Text = "Accounts";
+            this.accountsToolStripMenuItem.Click += new System.EventHandler(this.AccountsToolStripMenuItem_Click);
+            // 
             // statusStrip
             // 
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -119,12 +128,12 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(54, 20);
             this.toolStripStatusLabel.Text = "Durum";
             // 
-            // accountsToolStripMenuItem
+            // adisyonToolStripMenuItem
             // 
-            this.accountsToolStripMenuItem.Name = "accountsToolStripMenuItem";
-            this.accountsToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
-            this.accountsToolStripMenuItem.Text = "Accounts";
-            this.accountsToolStripMenuItem.Click += new System.EventHandler(this.AccountsToolStripMenuItem_Click);
+            this.adisyonToolStripMenuItem.Name = "adisyonToolStripMenuItem";
+            this.adisyonToolStripMenuItem.Size = new System.Drawing.Size(76, 24);
+            this.adisyonToolStripMenuItem.Text = "Adisyon";
+            this.adisyonToolStripMenuItem.Click += new System.EventHandler(this.AdisyonToolStripMenuItem_Click);
             // 
             // StockMain
             // 
@@ -135,7 +144,7 @@
             this.Controls.Add(this.menuStrip);
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "StockMain";
             this.Text = "StockMain";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -162,6 +171,7 @@
         private System.Windows.Forms.ToolStripMenuItem stockListToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem homeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem accountsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem adisyonToolStripMenuItem;
     }
 }
 

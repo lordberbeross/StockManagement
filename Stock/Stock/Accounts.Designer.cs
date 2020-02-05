@@ -1,6 +1,6 @@
 ﻿namespace Stock
 {
-    partial class ManageStaff
+    partial class Accounts
     {
         /// <summary>
         /// Required designer variable.

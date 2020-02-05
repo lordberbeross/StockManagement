@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9E0F49A6-865E-4BE8-8A04-F6A3AA819F8A}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>Stock</RootNamespace>
     <AssemblyName>Stock</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
       <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.dll</HintPath>
@@ -56,6 +59,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adisyon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Adisyon.Designer.cs">
+      <DependentUpon>Adisyon.cs</DependentUpon>
+    </Compile>
     <Compile Include="Anasayfa.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -63,11 +72,11 @@
       <DependentUpon>Anasayfa.cs</DependentUpon>
     </Compile>
     <Compile Include="Connections.cs" />
-    <Compile Include="ManageStaff.cs">
+    <Compile Include="Accounts.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ManageStaff.Designer.cs">
-      <DependentUpon>ManageStaff.cs</DependentUpon>
+    <Compile Include="Accounts.Designer.cs">
+      <DependentUpon>Accounts.cs</DependentUpon>
     </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
@@ -89,11 +98,14 @@
     <Compile Include="StockMain.Designer.cs">
       <DependentUpon>StockMain.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Adisyon.resx">
+      <DependentUpon>Adisyon.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Anasayfa.resx">
       <DependentUpon>Anasayfa.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ManageStaff.resx">
-      <DependentUpon>ManageStaff.cs</DependentUpon>
+    <EmbeddedResource Include="Accounts.resx">
+      <DependentUpon>Accounts.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>

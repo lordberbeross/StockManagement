@@ -19,9 +19,21 @@ namespace Stock
 
         private void productsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Products pro = new Products();
-            pro.MdiParent = this;
-            pro.Show();
+            bool Isopen = false;
+            foreach(Form f in Application.OpenForms)
+            {
+                if(f.Text == "Products")
+                {
+                    Isopen = true;
+                }
+            }
+            if (Isopen == false)
+            {
+                Products pro = new Products();
+                pro.MdiParent = this;
+                pro.Show();
+            }
+  
         }
 
         private void StockMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -39,17 +51,44 @@ namespace Stock
             Anasayfa ana = new Anasayfa();
             Login login = new Login();
             
-            ana.MdiParent = this;
-           
-            ana.Show();
-            
+            ana.MdiParent = this;  
+            ana.Show();   
         }
 
         private void AccountsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ManageStaff staff = new ManageStaff();
-            staff.MdiParent = this;
-            staff.Show();
+            bool Isopen = false;
+            foreach (Form f in Application.OpenForms)
+            {
+                if (f.Text == "Accounts")
+                {
+                    Isopen = true;
+                }
+            }
+            if (Isopen == false)
+            {
+                Accounts staff = new Accounts();
+                staff.MdiParent = this;
+                staff.Show();
+            }   
+        }
+
+        private void AdisyonToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool Isopen = false;
+            foreach (Form f in Application.OpenForms)
+            {
+                if (f.Text == "Adisyon")
+                {
+                    Isopen = true;
+                }
+            }
+            if (Isopen == false)
+            {
+                Adisyon ad = new Adisyon();
+                ad.MdiParent = this;
+                ad.Show();
+            } 
         }
     }
 }

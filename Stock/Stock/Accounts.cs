@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace Stock
 {
-    public partial class ManageStaff : Form
+    public partial class Accounts : Form
     {
-        public ManageStaff()
+        public Accounts()
         {
             InitializeComponent();
         }

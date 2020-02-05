@@ -15,6 +15,7 @@ namespace Stock
     {
         public Products()
         {
+
             InitializeComponent();
         }
 
