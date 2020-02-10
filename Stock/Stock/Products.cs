@@ -63,6 +63,10 @@ namespace Stock
                 loadData();
                 reset();
             }
+            else
+            {
+                MessageBox.Show("Please fill the mandatory fields");
+            }
            
         }
         public void loadData()
@@ -112,26 +116,31 @@ namespace Stock
 
         private void button1_Click(object sender, EventArgs e)
         {
-            SqlConnection con = Connections.GetConnection();
-
-
-            if (ifRecordExists(con,textBox1.Text))
+            DialogResult dialogResult = MessageBox.Show("Silmek istediğinizden emin misiniz?", "Uyarı", MessageBoxButtons.YesNo);
+            if (dialogResult==DialogResult.Yes)
             {
-                con.Open();
-                var query = "DELETE FROM [dbo].[Products] WHERE [ProductCode] ='" + dataGridView1.SelectedRows[0].Cells[0].Value + "' ";
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.ExecuteNonQuery();
-                con.Close();
+            
+                SqlConnection con = Connections.GetConnection();
 
+
+                if (ifRecordExists(con, textBox1.Text))
+                {
+                    con.Open();
+                    var query = "DELETE FROM [dbo].[Products] WHERE [ProductCode] ='" + dataGridView1.SelectedRows[0].Cells[0].Value + "' ";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+
+                }
+                else
+                {
+                    MessageBox.Show("Record Doesn't Exist!");
+                }
+                loadData();
+                reset();
+                
             }
-            else
-            {
-                MessageBox.Show("Record Doesn't Exist!");
-            }
-            loadData();
-            reset();
         }
-        
 
         private void dataGridView1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -168,10 +177,37 @@ namespace Stock
         private bool validation()
         {
             bool result = false;
-            if (!string.IsNullOrEmpty(textBox1.Text) && !string.IsNullOrEmpty(textBox2.Text) && !string.IsNullOrEmpty(textBox3.Text) && !string.IsNullOrEmpty(textBox4.Text) && (comboBox1.SelectedIndex>-1))
+            if (string.IsNullOrEmpty(textBox1.Text))
+            {
+                errorProvider1.Clear();
+                errorProvider1.SetError(textBox1,"Product Code Required");
+            }
+            else if (string.IsNullOrEmpty(textBox2.Text))
+            {
+                errorProvider1.Clear();
+                errorProvider1.SetError(textBox2, "Product Class Required");
+            }
+            else if (string.IsNullOrEmpty(textBox3.Text))
+            {
+                errorProvider1.Clear();
+                errorProvider1.SetError(textBox3, "Product Name Required");
+            }
+            else if (string.IsNullOrEmpty(textBox4.Text))
+            {
+                errorProvider1.Clear();
+                errorProvider1.SetError(textBox4, "Product Price Required");
+            }
+            else if (string.IsNullOrEmpty(comboBox1.Text))
+            {
+                errorProvider1.Clear();
+                errorProvider1.SetError(comboBox1, "Status Required");
+            }
+            else
             {
                 result = true;
             }
+       
+
             return result;
         }
     }
