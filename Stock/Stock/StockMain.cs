@@ -12,6 +12,7 @@ namespace Stock
 {
     public partial class StockMain : Form
     {
+        public string loggedUser;
         public StockMain()
         {
             InitializeComponent();
@@ -134,6 +135,7 @@ namespace Stock
         {
             timer1.Enabled = true;
             timer1.Interval = 1000;
+            MessageBox.Show(loggedUser);
         }
     }
 }

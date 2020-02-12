@@ -65,6 +65,12 @@
     <Compile Include="Adisyon.Designer.cs">
       <DependentUpon>Adisyon.cs</DependentUpon>
     </Compile>
+    <Compile Include="AdisyonOpt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdisyonOpt.Designer.cs">
+      <DependentUpon>AdisyonOpt.cs</DependentUpon>
+    </Compile>
     <Compile Include="Anasayfa.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,6 +98,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sales.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Sales.Designer.cs">
+      <DependentUpon>Sales.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stock.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -106,6 +118,9 @@
     </Compile>
     <EmbeddedResource Include="Adisyon.resx">
       <DependentUpon>Adisyon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AdisyonOpt.resx">
+      <DependentUpon>AdisyonOpt.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Anasayfa.resx">
       <DependentUpon>Anasayfa.cs</DependentUpon>
@@ -128,6 +143,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Sales.resx">
+      <DependentUpon>Sales.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Stock.resx">
       <DependentUpon>Stock.cs</DependentUpon>
     </EmbeddedResource>

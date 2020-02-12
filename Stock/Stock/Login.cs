@@ -65,6 +65,7 @@ namespace Stock
             {
                 this.Hide();
                 StockMain main = new StockMain();
+                main.loggedUser = textBox1.Text;
                 main.Show();
             }
             else

@@ -11,8 +11,10 @@ using System.Windows.Forms;
 
 namespace Stock
 {
+    
     public partial class Stock : Form
     {
+        
         public Stock()
         {
             InitializeComponent();

@@ -13,6 +13,11 @@ namespace Stock
 {
     public partial class Adisyon : Form
     {
+        ListViewItem item;
+        bool isCash = false;
+        bool isCredit = false;
+        public string[] row= new string[2];
+        public double valorSum;
         public Adisyon()
         {
             InitializeComponent();
@@ -32,7 +37,7 @@ namespace Stock
             List<string> str = new List<string>();
             List<string> str2 = new List<string>();
             List<string> str3 = new List<string>();
-        var a = dr;
+            var a = dr;
             while (dr.Read())
             {
                 str.Add(dr["ProductClass"].ToString());
@@ -80,17 +85,16 @@ namespace Stock
                             l2.Click += new System.EventHandler(l2_Click);
                             void l2_Click(object sender2, EventArgs e2)
                             {
-                                string[] row = { l2.Text, am };
-                                ListViewItem item = new ListViewItem(row);
-                                listView1.Items.Add(item); 
+                                row[0] = l2.Text;
+                                row[1] = am;
+                                item = new ListViewItem(row);
+                                listView1.Items.Add(item);
                                 var t = item.SubItems[1].ToString();
-                                double valorSum = 0;
-
+                                valorSum = 0;   
                                 foreach (ListViewItem lstItem in listView1.Items)
                                 {
                                     valorSum += double.Parse(lstItem.SubItems[1].Text);
-                                }
-                                Console.WriteLine(valorSum);
+                                } 
                                 label2.Text = valorSum.ToString();
                             }      
                         }                    
@@ -103,6 +107,78 @@ namespace Stock
         private void Button2_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem lstItem in listView1.Items)
+            {
+               if(lstItem.Selected)
+                    {
+                    lstItem.Remove();
+                    valorSum -= double.Parse(lstItem.SubItems[1].Text);
+                }
+                label2.Text = valorSum.ToString();
+            }
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            SqlConnection con = Connections.GetConnection();
+            con.Open();
+            var query = "";
+            if (isCash)
+            {
+                query = "INSERT INTO [dbo].[Sales] ([TotalPrice],[SalesDate],[SalesTime],[Cash],[Credit]) VALUES ('" + (decimal)valorSum + "','" + DateTime.Now + "','" + DateTime.Now.TimeOfDay + "','" + (decimal)valorSum + "','" + 0 + "')";
+
+                isCash = false;
+                isCredit = false;
+                SqlCommand sql = new SqlCommand(query, con);
+                sql.ExecuteNonQuery();
+            }
+            else
+            if (isCredit)
+            {
+                query = "INSERT INTO [dbo].[Sales] ([TotalPrice],[SalesDate],[SalesTime],[Cash],[Credit]) VALUES ('" + (decimal)valorSum + "','" + DateTime.Now + "','" + DateTime.Now.TimeOfDay + "','" + 0 + "','" + (decimal)valorSum + "')";
+                isCash = false;
+                isCredit = false;
+                SqlCommand sql = new SqlCommand(query, con);
+                sql.ExecuteNonQuery();
+            }
+            else MessageBox.Show("Please select Cash or Credit");
+            foreach (ListViewItem lstItem in listView1.Items)
+            {
+                SqlCommand sql2 = new SqlCommand("INSERT INTO [dbo].[SalesDetails] ([ProductName],[ProductPrice],[Quantity]) VALUES ('" + lstItem.Text + "','" + 1 + "','" + 0 + "')", con);
+                sql2.ExecuteNonQuery();
+            }
+            con.Close();
+        }
+
+        private void Button4_Click(object sender, EventArgs e)
+        {
+            isCash = true;
+            isCredit = false;
+           
+            //foreach (ListViewItem lstItem in listView1.Items)
+            //{
+            //    SqlConnection con = Connections.GetConnection();
+            //    con.Open();
+            //    SqlCommand sql = new SqlCommand("INSERT INTO [dbo].[SalesDetails] ([ProductName],[ProductPrice],[Quantity]) VALUES ('" + lstItem.Text+"','"+1+"','"+0+"')", con);
+            //    sql.ExecuteNonQuery();
+            //    con.Close();
+            //}
+        }
+
+        private void Button5_Click(object sender, EventArgs e)
+        {
+            isCredit = true;
+            isCash = false;
+        }
+
+        private void Button7_Click(object sender, EventArgs e)
+        {
+            var AdisyonOpt = new AdisyonOpt(this);
+            AdisyonOpt.Show(this);
         }
     }
 }
