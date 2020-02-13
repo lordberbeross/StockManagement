@@ -84,6 +84,7 @@
     <Compile Include="Accounts.Designer.cs">
       <DependentUpon>Accounts.cs</DependentUpon>
     </Compile>
+    <Compile Include="listView1.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>

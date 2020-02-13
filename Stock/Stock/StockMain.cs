@@ -106,6 +106,7 @@ namespace Stock
                 Adisyon ad = new Adisyon();
                 ad.MdiParent = this;
                 ad.Show();
+         
             } 
         }
 

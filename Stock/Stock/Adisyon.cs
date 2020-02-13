@@ -22,7 +22,7 @@ namespace Stock
         {
             InitializeComponent();
         }
-        private void Adisyon_Load(object sender, EventArgs e)
+        public void Adisyon_Load(object sender, EventArgs e)
         {
             listView1.Columns.Add("Name", 150);
             listView1.Columns.Add("Price", 150);
@@ -158,15 +158,6 @@ namespace Stock
         {
             isCash = true;
             isCredit = false;
-           
-            //foreach (ListViewItem lstItem in listView1.Items)
-            //{
-            //    SqlConnection con = Connections.GetConnection();
-            //    con.Open();
-            //    SqlCommand sql = new SqlCommand("INSERT INTO [dbo].[SalesDetails] ([ProductName],[ProductPrice],[Quantity]) VALUES ('" + lstItem.Text+"','"+1+"','"+0+"')", con);
-            //    sql.ExecuteNonQuery();
-            //    con.Close();
-            //}
         }
 
         private void Button5_Click(object sender, EventArgs e)
@@ -177,8 +168,15 @@ namespace Stock
 
         private void Button7_Click(object sender, EventArgs e)
         {
-            var AdisyonOpt = new AdisyonOpt(this);
-            AdisyonOpt.Show(this);
+            //AdisyonOpt ao = new AdisyonOpt(this);
+            //ao.SetBtn = listView1;
+            //ao.Show(this);
+            //this.Close();
+            ListView form1LV = listView1;
+            AdisyonOpt f = new AdisyonOpt(form1LV);
+            f.Show();   
+        }
         }
     }
-}
+
+
