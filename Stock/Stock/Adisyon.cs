@@ -13,10 +13,13 @@ namespace Stock
 {
     public partial class Adisyon : Form
     {
+        int asd;
+        int firstValue = 0;
+        Dictionary<string, int> production = new Dictionary<string, int>();
         ListViewItem item;
         bool isCash = false;
         bool isCredit = false;
-        public string[] row= new string[2];
+        public string[] row= new string[3];
         public double valorSum;
         public Adisyon()
         {
@@ -26,7 +29,9 @@ namespace Stock
         {
             listView1.Columns.Add("Name", 150);
             listView1.Columns.Add("Price", 150);
+            listView1.Columns.Add("Quantity", 150);
             listView1.View = View.Details;
+            listView1.TabIndex = 0;
             listView1.FullRowSelect = true;
             SqlConnection cn = Connections.GetConnection();
             SqlCommand cmd = new SqlCommand();
@@ -40,6 +45,7 @@ namespace Stock
             var a = dr;
             while (dr.Read())
             {
+                production[(string)dr["ProductName"]] = (int)dr["ProductPrice"];
                 str.Add(dr["ProductClass"].ToString());
                 str2.Add(dr["ProductClass"].ToString());
                 str2.Add(dr["ProductName"].ToString());
@@ -81,21 +87,70 @@ namespace Stock
                                 Margin = new Padding(5),   
                             };
                             string am = str2[i + 1].ToString();
+                         
                             flowLayoutPanel2.Controls.Add(l2);                           
                             l2.Click += new System.EventHandler(l2_Click);
+
                             void l2_Click(object sender2, EventArgs e2)
                             {
-                                row[0] = l2.Text;
-                                row[1] = am;
-                                item = new ListViewItem(row);
-                                listView1.Items.Add(item);
-                                var t = item.SubItems[1].ToString();
-                                valorSum = 0;   
-                                foreach (ListViewItem lstItem in listView1.Items)
+                                
+                                asd = countinArray(listView1, l2.Text);
+
+                                if (asd==1)
                                 {
-                                    valorSum += double.Parse(lstItem.SubItems[1].Text);
-                                } 
+                                    row[0] = l2.Text;
+                                    row[1] = am;
+                                    row[2] = asd.ToString();
+                                    item = new ListViewItem(row);
+
+                                    listView1.Items.Add(item);
+                                    var t = item.SubItems[1].ToString();
+                                    //  valorSum = 0;
+                                   
+                                        valorSum += double.Parse(listView1.Items[listView1.Items.Count-1].SubItems[1].Text);
+                                   
+
+
+                                }
+                                else
+                                {
+                                    for(int z = 0; z < listView1.Items.Count; z++)
+                                    {
+                                        if (listView1.Items[z].SubItems[0].Text==l2.Text)
+                                        {
+                                            firstValue = Convert.ToInt32(listView1.Items[z].SubItems[2].Text);
+                                            listView1.Items[z].SubItems[2].Text = (firstValue + 1).ToString();
+                                            listView1.Items[z].SubItems[1].Text = (Convert.ToInt32(listView1.Items[z].SubItems[2].Text) * ((production[listView1.Items[z].SubItems[0].Text]))).ToString() ;
+                                            valorSum += double.Parse(production[listView1.Items[z].SubItems[0].Text].ToString());
+                                        }
+                                    }
+                                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                /*    asd = countinArray(listView1, l2.Text);
+                                    MessageBox.Show(asd.ToString());*/
+
                                 label2.Text = valorSum.ToString();
+                                   
+                           
+
+                                   
+                                
+
+
+
                             }      
                         }                    
                         i += 3;
@@ -124,33 +179,48 @@ namespace Stock
 
         private void Button1_Click(object sender, EventArgs e)
         {
+            int userId=0;
             SqlConnection con = Connections.GetConnection();
             con.Open();
             var query = "";
             if (isCash)
             {
-                query = "INSERT INTO [dbo].[Sales] ([TotalPrice],[SalesDate],[SalesTime],[Cash],[Credit]) VALUES ('" + (decimal)valorSum + "','" + DateTime.Now + "','" + DateTime.Now.TimeOfDay + "','" + (decimal)valorSum + "','" + 0 + "')";
-
+                query = "INSERT INTO [dbo].[Sales] ([TotalPrice],[SalesDate],[SalesTime],[Cash],[Credit]) VALUES ('" + (decimal)valorSum + "','" + DateTime.Now.ToString("MM/dd/yyyy") + "','" + DateTime.Now.ToString("HH:mm:ss") + "','" + (decimal)valorSum + "','" + 0 + "')";
+              
+                query += "SET @SalesID= SCOPE_IDENTITY()";
                 isCash = false;
                 isCredit = false;
                 SqlCommand sql = new SqlCommand(query, con);
+                sql.Parameters.Add("@SalesID", SqlDbType.Int).Direction = ParameterDirection.Output;
                 sql.ExecuteNonQuery();
+                userId = Convert.ToInt32(sql.Parameters["@SalesID"].Value);
+              
             }
             else
             if (isCredit)
             {
-                query = "INSERT INTO [dbo].[Sales] ([TotalPrice],[SalesDate],[SalesTime],[Cash],[Credit]) VALUES ('" + (decimal)valorSum + "','" + DateTime.Now + "','" + DateTime.Now.TimeOfDay + "','" + 0 + "','" + (decimal)valorSum + "')";
+                query = "INSERT INTO [dbo].[Sales] ([TotalPrice],[SalesDate],[SalesTime],[Cash],[Credit]) VALUES ('" + (decimal)valorSum + "','" + DateTime.Now.ToString("MM/dd/yyyy") + "','" + DateTime.Now.ToString("HH:mm:ss") + "','" + 0 + "','" + (decimal)valorSum + "')";
+                query += " set @id= SCOPE_IDENTITY()";
                 isCash = false;
                 isCredit = false;
                 SqlCommand sql = new SqlCommand(query, con);
+                sql.Parameters.Add("@id", SqlDbType.Int).Direction = ParameterDirection.Output;
                 sql.ExecuteNonQuery();
+                userId = Convert.ToInt32(sql.Parameters["id"].Value);
             }
-            else MessageBox.Show("Please select Cash or Credit");
+            else
+            {
+                MessageBox.Show("Please select Cash or Credit"); 
+            }
             foreach (ListViewItem lstItem in listView1.Items)
             {
-                SqlCommand sql2 = new SqlCommand("INSERT INTO [dbo].[SalesDetails] ([ProductName],[ProductPrice],[Quantity]) VALUES ('" + lstItem.Text + "','" + 1 + "','" + 0 + "')", con);
-                sql2.ExecuteNonQuery();
+               
+                query = "INSERT INTO [dbo].[SalesDetails] ([SalesID],[ProductName],[ProductPrice],[Quantity]) VALUES ('"+userId+"','" + lstItem.SubItems[0].Text + "','" + double.Parse(lstItem.SubItems[1].Text) + "','" + Convert.ToInt32(lstItem.SubItems[2].Text) + "')";
+                SqlCommand newSql = new SqlCommand(query, con);
+
+                newSql.ExecuteNonQuery();
             }
+            
             con.Close();
         }
 
@@ -174,9 +244,37 @@ namespace Stock
             //this.Close();
             ListView form1LV = listView1;
             AdisyonOpt f = new AdisyonOpt(form1LV);
-            f.Show();   
+            f.Show();
         }
+        private int countinArray(ListView lst, String item)
+        {
+            int counter = 1;
+            if (lst.Items.Count>0)
+            {
+                for (int i = 0; i < lst.Items.Count; i++)
+                {
+
+                    if (lst.Items[i].SubItems[0].Text == item)
+                    {
+                        counter++;
+                            
+                    }
+                  
+                    
+                   
+
+                }
+
+
+            }
+          
+
+            return counter;
+
         }
+       
+
+    }
     }
 
 
